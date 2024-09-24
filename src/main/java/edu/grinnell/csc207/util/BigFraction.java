@@ -21,26 +21,11 @@ public class BigFraction {
     this.num = numer;
     this.dem = denom;
   }
+  
   public void reduce(){
-    //If the fraction is zero, simplifies it
-    if(this.num.equals(zero)){
-      if(this.dem.equals(zero)){
-        return;
-      }
-      else{
-        this.dem = BigInteger.valueOf(1);
-        return;
-      }
-    }
-    //If the fraction is not zero
-    for(int i=this.dem.intValue(); i>0; i--){
-      if((this.num.intValue())%i == 0){
-        //Greatest common denominator of num and dem
-        BigInteger gcd = BigInteger.valueOf(i);
-        this.num = this.num.divide(gcd);
-        this.dem = this.dem.divide(gcd);
-      }
-    }
+    BigInteger bGCD = this.num.gcd(this.dem);
+    this.num = this.num.divide(bGCD);
+    this.dem = this.dem.divide(bGCD);
   }
 
   public BigInteger numerator(){

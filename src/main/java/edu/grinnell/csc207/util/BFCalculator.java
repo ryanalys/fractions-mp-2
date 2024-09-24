@@ -37,15 +37,17 @@ public class BFCalculator {
     //The greatest common denominator of the two fractions
     if(computed.num.equals(zero)){
       return val;
-    }
-    else if(computed.dem.equals(zero)){
+    } else if(computed.dem.equals(zero)){
       //Error message divide by zero here
       val.set(zero, zero);
       return val;
-    }
-    else{
-      BigInteger gcd = computed.denominator().multiply(val.denominator());
-
+    } else if(computed.dem.equals(val.dem)){
+      return val;
+    } else{
+      BigInteger gcd = computed.denominator().gcd(val.denominator());
+      if(gcd.equals(BigInteger.valueOf(0))){
+        return val;
+      }
       //What we need to multiply a given fraction by to get the correct denominator
       BigInteger multiple;
       //The new num for the fractions
@@ -77,25 +79,20 @@ public class BFCalculator {
       //Adds the numerators together
       BigInteger newNum = val.numerator().add(computed.numerator());
       computed.setNum(newNum);
-      computed.reduce();
     }
-    
   }
 
   public void subtract(BigFraction val){
     if(computed.numerator().equals(zero) && computed.denominator().equals(zero)){
       computed.num = val.num;
       computed.dem = val.dem;
-    }
-    else if(val.numerator().equals(zero)){
+    } else if(val.numerator().equals(zero)){
       return;
-    }
-    else{
+    } else{
       val = commonDenominator(val);
 
       BigInteger newNum = computed.numerator().subtract(val.numerator());
       computed.setNum(newNum);
-      computed.reduce();
     }
   }
   
@@ -107,7 +104,6 @@ public class BFCalculator {
       BigInteger newNum = computed.numerator().multiply(val.numerator());
       BigInteger newDem = computed.denominator().multiply(val.denominator());
       computed.set(newNum, newDem);
-      computed.reduce();
     }
   }
 
@@ -120,9 +116,9 @@ public class BFCalculator {
       BigInteger newNum = computed.numerator().multiply(val.denominator());
       BigInteger newDem = computed.denominator().multiply(val.numerator());
       computed.set(newNum, newDem);
-      computed.reduce();
     }
   }
+
 
   public void clear(){
     computed.set(zero, zero);

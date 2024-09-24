@@ -11,4 +11,10 @@ public class BFRegisterSet {
     int index = (int) letter - (int) 'a';
     reg[index] = val;
   }
+
+  public BigFraction get(char letter){
+    int index = (int) letter - (int) 'a';
+    BigFraction output = reg[index];
+    return output;
+  }
 }
