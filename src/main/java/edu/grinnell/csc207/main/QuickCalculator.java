@@ -23,7 +23,7 @@ public class QuickCalculator {
     String current;
     int temp = 0;
     BigInteger num = zero;
-    BigInteger dem = BigInteger.valueOf(1);
+    BigInteger dem = BigInteger.valueOf(12);
     
     if(expanded[0].charAt(0)=='-'){
       neg = true;
@@ -100,7 +100,7 @@ public class QuickCalculator {
           }
           else{
             current = StringtoBigFrac(expression[j]);
-            cal.add(current);
+            cal.get().set(current.numerator(), current.denominator());
           }
         }
         cal.get().reduce();

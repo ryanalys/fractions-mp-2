@@ -8,14 +8,14 @@ public class InteractiveCalculator{
   
   public static void main(String[] args){
     PrintWriter pen = new PrintWriter(System.out, true);
-    boolean finished = false;
-    while(finished == false){
-      Scanner eyes = new Scanner(System.in);
+    while(true){
+      pen.printf("--> ");
       pen.flush();
-      String moreStuff = eyes.nextLine();
+      Scanner eyes = new Scanner(System.in);
+      String moreStuff = eyes.next();
+      pen.printf("\n");
       String[] values = moreStuff.split(" ");
       if(values[0].equals("QUIT")){
-        finished = true;
         eyes.close();
         return;
       }

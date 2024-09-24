@@ -3,12 +3,7 @@ import java.math.BigInteger;
 
 public class BFCalculator {
   BigInteger zero = BigInteger.valueOf(0);
-  BigInteger one = BigInteger.valueOf(1);
-  BigInteger two = BigInteger.valueOf(2);
-  BigInteger three = BigInteger.valueOf(3);
-  BigInteger four = BigInteger.valueOf(4);
-  BigInteger five = BigInteger.valueOf(5);
-  BigFraction computed;
+  BigFraction computed = new BigFraction(zero, zero);
 
   public BFCalculator(BigFraction comp){
     this.computed = comp;
@@ -38,16 +33,15 @@ public class BFCalculator {
     if(computed.num.equals(zero)){
       return val;
     } else if(computed.dem.equals(zero)){
-      //Error message divide by zero here
-      val.set(zero, zero);
       return val;
     } else if(computed.dem.equals(val.dem)){
       return val;
     } else{
-      BigInteger gcd = computed.denominator().gcd(val.denominator());
+      BigInteger gcd = computed.denominator().multiply(val.denominator());
       if(gcd.equals(BigInteger.valueOf(0))){
         return val;
       }
+      else{
       //What we need to multiply a given fraction by to get the correct denominator
       BigInteger multiple;
       //The new num for the fractions
@@ -56,12 +50,12 @@ public class BFCalculator {
       multiple = gcd.divide(val.denominator());
       newNum = val.numerator().multiply(multiple);
       val.set(newNum, gcd);
-
       //Changes computed
       multiple = gcd.divide(computed.denominator());
       newNum = computed.numerator().multiply(multiple);
       computed.set(newNum, gcd);
       return val;
+    }
     }
   }
 
