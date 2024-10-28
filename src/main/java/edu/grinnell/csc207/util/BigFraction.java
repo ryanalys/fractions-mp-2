@@ -2,26 +2,39 @@ package edu.grinnell.csc207.util;
 import java.math.BigInteger;
 
 /**
+ * Creates a Big Fraction with a numerator and denominator
+ * @author Alyssa Ryan
  * Acknowledgements
- *     Some code adapted from the BigFraction class from
- *     the designing your own classes lab
+ *     Some code adapted from the BigFraction class from the <designing your own classes> lab in CSC-207
  */
 
 public class BigFraction {
   /**
-   * Numerator and denominator of the fraction
-   * Type BigInteger
+   * Numerator of the fraction
    */
   BigInteger num;
+  /**
+   * Denominator of the fraction
+   */
   BigInteger dem;
-
+  /**
+   * Big Integer value of zero
+   */
   BigInteger zero = BigInteger.valueOf(0);
 
+  /**
+   * Initializes the BigFraction with numerator and denominator inputted by the user
+   * @param numer Numerator of BigFraction
+   * @param denom Denominator of BigFraction
+   */
   public BigFraction(BigInteger numer, BigInteger denom){
     this.num = numer;
     this.dem = denom;
   }
-  
+
+  /**
+   * Reduces the fraction as much as possible
+   */
   public void reduce(){
     BigInteger bGCD = this.num.gcd(this.dem);
     if(bGCD != zero){
@@ -34,27 +47,52 @@ public class BigFraction {
     }
   }
 
+  /**
+   * Returns the numerator of the fraction
+   * @return The numerator
+   */
   public BigInteger numerator(){
     return this.num;
   }
 
+  /**
+   * Returns the denominator of the fraction
+   * @return The denominator
+   */
   public BigInteger denominator(){
     return this.dem;
   }
 
+  /**
+   * Sets the fraction to have the numerator and denominator inputted by the user
+   * @param numer The numerator
+   * @param denom The denominator
+   */
   public void set(BigInteger numer, BigInteger denom){
     this.num = numer;
     this.dem = denom;
   }
 
+  /**
+   * Sets the numerator of the fraction
+   * @param numer The numerator
+   */
   public void setNum(BigInteger numer){
     this.num = numer;
   }
-  
+
+  /**
+   * Sets the denominator of the fraction
+   * @param denom The denominator
+   */
   public void setDem(BigInteger denom){
     this.dem = denom;
   }
 
+  /**
+   * Outputs the string in the format ready to be printed
+   * @return String to be printed out
+   */
   public String fracPrint(){
     String output = this.num.toString() + "/" + this.dem.toString();
     return output;

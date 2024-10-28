@@ -7,19 +7,43 @@ import edu.grinnell.csc207.util.BFRegisterSet;
 import edu.grinnell.csc207.util.BigFraction;
 
 /**
+ * Calculates based off of strings from user
+ * @author Alyssa Ryan
  * Acknowledgments:
  *  GeekforGeeks tutorial on the substring function
  *  GeekforGeeks tutorial on string splitting
  */
-
 public class QuickCalculator {
+  /**
+   * Big Integer value of zero
+   */
   public static BigInteger zero = BigInteger.valueOf(0);
+  /**
+   * Big Integer value of one
+   */
   public static BigInteger one = BigInteger.valueOf(1);
+  /**
+   * Pen to use throughout the class
+   */
   public static PrintWriter pen = new PrintWriter(System.out, true);
+  /**
+   * Calculator we work with
+   */
   public static BFCalculator cal = new BFCalculator(new BigFraction(zero, zero));
+  /**
+   * The current value we are working with
+   */
   public static BigFraction current = new BigFraction(zero, zero);
+  /**
+   * Regset we are working with
+   */
   public static BFRegisterSet regset = new BFRegisterSet(new BigFraction[26]);
 
+  /**
+   * Converts the string to the BigFraction
+   * @param input string to be converted
+   * @return BigFraction version of the string inputted
+   */
   public static BigFraction StringtoBigFrac(String input){
     String[] expanded = input.split("/");
     BigFraction output = new BigFraction(zero,zero);
@@ -77,6 +101,10 @@ public class QuickCalculator {
     return output;
   }
 
+  /**
+   * Takes in an array of arguments of calculations to be performed, outputs the answers
+   * @param expression array of expressions inputted by user
+   */
   public static void caller(String[] expression){
     char reg = ' ';
     boolean end = false;
@@ -169,6 +197,10 @@ public class QuickCalculator {
     pen.println(print);
   }
 
+  /**
+   * Gets input from the user
+   * @param args the expressions to be calculated
+   */
   public static void main(String[] args){
     PrintWriter pen = new PrintWriter(System.out, true);
     for(int i=0; i<args.length; i++){
