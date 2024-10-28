@@ -24,8 +24,14 @@ public class BigFraction {
   
   public void reduce(){
     BigInteger bGCD = this.num.gcd(this.dem);
-    this.num = this.num.divide(bGCD);
-    this.dem = this.dem.divide(bGCD);
+    if(bGCD != zero){
+      if(this.dem.compareTo(zero) == -1){
+        this.num.multiply(BigInteger.valueOf(-1));
+        this.dem.multiply(BigInteger.valueOf(-1));
+      } //If the denominator is negative, moves it to the numerator
+      this.num = this.num.divide(bGCD);
+      this.dem = this.dem.divide(bGCD);
+    }
   }
 
   public BigInteger numerator(){

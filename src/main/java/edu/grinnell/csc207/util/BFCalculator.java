@@ -2,11 +2,16 @@ package edu.grinnell.csc207.util;
 import java.math.BigInteger;
 
 public class BFCalculator {
-  BigInteger zero = BigInteger.valueOf(0);
-  BigFraction computed = new BigFraction(zero, zero);
+  public BigInteger zero = BigInteger.valueOf(0);
+  public BigFraction computed = new BigFraction(zero, zero);
+  public boolean computedChanged = false;
 
   public BFCalculator(BigFraction comp){
     this.computed = comp;
+  }
+
+  public void setComp(BigFraction frac){
+    this.computed.set(frac.num, frac.dem);
   }
 
   public String fracPrint(BigFraction frac){
