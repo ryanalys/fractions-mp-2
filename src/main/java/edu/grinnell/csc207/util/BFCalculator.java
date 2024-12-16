@@ -181,9 +181,10 @@ public class BFCalculator {
   } //divide(BigFraction)
 
   /**
-   * Resets computed back to zero over zero.
+   * Resets computed back to zero over zero and computedChanged to false.
    */
   public void clear() {
     computed.set(zero, zero);
+    computedChanged = false;
   } //clear()
 } //class BFCalculator

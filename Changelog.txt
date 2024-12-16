@@ -1,2 +1,7 @@
 Updated QuickCalculator and Interactive Calculator so that they can accept input from the user
     and return the correct output
+
+
+Second Redo-
+    Made sure the calculator gave the correct errors
+    Added TestMP02.java to the correct spot

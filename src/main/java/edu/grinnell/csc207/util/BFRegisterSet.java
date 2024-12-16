@@ -28,6 +28,9 @@ public class BFRegisterSet {
    * @param val The value to store
    */
   public void store(char letter, BigFraction val) {
+    if (Character.isUpperCase(letter)) {
+      letter = Character.toLowerCase(letter);
+    } //if
     int index = (int) letter - (int) 'a';
     reg[index] = val;
   } //store(char, BigFraction)
@@ -38,7 +41,13 @@ public class BFRegisterSet {
    * @return The value stored at register letter
    */
   public BigFraction get(char letter) {
+    if (Character.isUpperCase(letter)) {
+      letter = Character.toLowerCase(letter);
+    } //if
     int index = (int) letter - (int) 'a';
+    if (reg[index] == null) {
+      return null;
+    } //if
     BigFraction output = new BigFraction(reg[index].numerator(), reg[index].denominator());
     return output;
   } //get(char)

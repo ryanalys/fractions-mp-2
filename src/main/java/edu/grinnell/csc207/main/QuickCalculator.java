@@ -23,6 +23,10 @@ public class QuickCalculator {
    */
   private static BigInteger one = BigInteger.valueOf(1);
   /**
+   * Big Integer value of negative one.
+   */
+  private static BigInteger negOne = BigInteger.valueOf(-1);
+  /**
    * Pen to use throughout the class.
    */
   private static PrintWriter pen = new PrintWriter(System.out, true);
@@ -84,13 +88,15 @@ public class QuickCalculator {
       output = regset.get(input.charAt(0));
       if (output == null) {
         pen.println("error: Invalid input");
+        cal.clear();
+        return output;
       } //if
       return output;
     } //Is the input actually a stored register value
 
     if (expanded.length == 1) {
       currentString = expanded[0];
-      temp = Integer.parseInt(String.valueOf(current));
+      temp = Integer.parseInt(String.valueOf(currentString));
       num = BigInteger.valueOf(temp);
     } else {
       for (int i = 0; i < expanded.length; i++) {
@@ -98,7 +104,7 @@ public class QuickCalculator {
           continue;
         } else {
           currentString = expanded[i];
-          temp = Integer.parseInt(String.valueOf(current));
+          temp = Integer.parseInt(String.valueOf(currentString));
           if (!foundNum) {
             num = BigInteger.valueOf(temp);
             foundNum = true;
@@ -118,6 +124,8 @@ public class QuickCalculator {
     return output;
   } //stringtoBigFrac(String)
 
+
+
   /**
    * Takes in an array of arguments of calculations to be performed, outputs the answers.
    * @param expression array of expressions inputted by user
@@ -127,28 +135,48 @@ public class QuickCalculator {
     boolean end = false;
     String print = " ";
     for (int j = 0; j < expression.length; j++) {
-      if (j == (expression.length - 1)
-          || expression[j + 1] == null
-          || expression[j + 1].isEmpty()) {
+      if (expression.length == 1) {
+        print = "--> " + expression[0];
+        pen.println(print);
+        return;
+      } else if (expression.length == 2 && !(expression[0].equals("STORE"))) {
+        pen.println("Error: invalid input");
+        return;
+      } else if (j == (expression.length - 1)) {
         end = true;
+        if (expression[j - 1].equals("+")
+            || expression[j - 1].equals("-")
+            || expression[j - 1].equals("*")
+            || expression[j - 1].equals("/")) {
+          pen.println("Error: invalid input");
+          cal.clear();
+        } //if
+        return;
+      } else if (expression[j + 1] == null || expression[j + 1].isEmpty()) {
+        pen.println("Error: invalid input");
+        cal.clear();
         return;
       } else if (expression[j].equals("STORE") && !end) {
-        if (!(cal.getComputedChanged())) {
-          pen.println("Error: invalid input");
+        if ((cal.get().denominator().compareTo(zero)) == 0) {
+          pen.println("Error: STORE recieved invalid register");
+          cal.clear();
+          return;
         } //if
         reg = expression[j + 1].charAt(0);
         BigFraction value = new BigFraction(cal.get().numerator(), cal.get().denominator());
         regset.store(reg, value);
         cal.get().reduce();
         if (cal.get().denominator().compareTo(one) == 0) {
-          print = "--> STORED " + reg + " " + (regset.get(reg).numerator()).toString();
+          print = "--> STORED " + reg;
         } else {
-          print = "--> STORED " + reg + " " + cal.fracPrint(regset.get(reg));
+          print = "--> STORED " + reg;
         } //if
         j++;
       } else if (expression[j].equals("+") && !end) {
-        if (!(cal.getComputedChanged())) {
+        if (!(cal.getComputedChanged())  || j == 0 || j + 1 == expression.length) {
           pen.println("Error: invalid input");
+          cal.clear();
+          return;
         } //if
         current = stringtoBigFrac(expression[j + 1]);
         print = "--> " + cal.fracPrint(cal.get()) + " + " + cal.fracPrint(current) + " = ";
@@ -162,8 +190,10 @@ public class QuickCalculator {
         } //if
         j++;
       } else if (expression[j].equals("-") && !end) {
-        if (!(cal.getComputedChanged())) {
+        if (!(cal.getComputedChanged()) || j == 0 || j + 1 == expression.length) {
           pen.println("Error: invalid input");
+          cal.clear();
+          return;
         } //if
         current = stringtoBigFrac(expression[j + 1]);
         print = "--> " + cal.fracPrint(cal.get()) + " - " + cal.fracPrint(current) + " = ";
@@ -176,8 +206,10 @@ public class QuickCalculator {
         } //if
         j++;
       } else if (expression[j].equals("*") && !end) {
-        if (!(cal.getComputedChanged())) {
+        if (!(cal.getComputedChanged())  || j == 0 || j + 1 == expression.length) {
           pen.println("Error: invalid input");
+          cal.clear();
+          return;
         } //if
         current = stringtoBigFrac(expression[j + 1]);
         print = "--> " + cal.fracPrint(cal.get()) + " * " + cal.fracPrint(current) + " = ";
@@ -190,23 +222,43 @@ public class QuickCalculator {
         } //if
         j++;
       } else if (expression[j].equals("/") && !end) {
-        if (!(cal.getComputedChanged())) {
+        if (!(cal.getComputedChanged())  || j == 0 || j + 1 == expression.length) {
           pen.println("Error: invalid input");
+          cal.clear();
+          return;
         } //if
         current = stringtoBigFrac(expression[j + 1]);
+        cal.get().reduce();
         print = "--> " + cal.fracPrint(cal.get()) + " / " + cal.fracPrint(current) + " = ";
         cal.divide(current);
         cal.get().reduce();
         if (cal.get().denominator().compareTo(one) == 0) {
           print = print + (cal.get().numerator()).toString();
+        } else if (cal.get().denominator().compareTo(zero) == -1) {
+          BigFraction compVal = cal.get();
+          BigInteger newNumer = compVal.numerator().multiply(negOne);
+          BigInteger newDenom = compVal.denominator().multiply(negOne);
+          compVal.set(newNumer, newDenom);
+          cal.setComp(compVal);
+          print = print + cal.fracPrint(cal.get());
         } else {
           print = print + cal.fracPrint(cal.get());
         } //if
         j++;
       } else {
+        if (Character.isLowerCase(expression[j].charAt(0))) {
+          pen.println("Error: Invalid input");
+          return;
+        } //if
         current = stringtoBigFrac(expression[j]);
         cal.get().set(current.numerator(), current.denominator());
         cal.setComputedChanged(true);
+        cal.get().reduce();
+        if ("+-*/".contains(expression[j + 1]) && (j + 1) >= expression.length) {
+          pen.println("Error:Invalid input");
+          cal.clear();
+          return;
+        } //if
       } //if
     } //for
     pen.println(print);
